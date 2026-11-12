@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SehatKampus — Track Kebiasaan</title>
+<style>
+:root{--navy:#173b57;--blue:#347da0;--mint:#e7f5ef;--bg:#f4f8fa;--ink:#203747;--muted:#6b7d88;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,#173b57,#347da0);color:white;padding:26px 20px 32px;border-radius:0 0 26px 26px}
+.wrap{max-width:1050px;margin:auto;padding:0 16px}header .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-weight:800;letter-spacing:.3px;font-size:20px}.tag{font-size:12px;opacity:.85}
+h1{font-size:27px;margin:24px 0 6px}header p{margin:0;opacity:.9}
+main{max-width:1050px;margin:20px auto;padding:0 16px 36px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:white;border-radius:18px;padding:18px;box-shadow:0 5px 22px #183c5510}
+.stat{font-size:28px;font-weight:800;color:var(--navy);margin:8px 0}.muted{color:var(--muted);font-size:13px}
+h2{font-size:18px;margin:0 0 12px}.section{margin-top:16px}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d8e2e8;border-radius:11px;margin:6px 0 10px;background:white;color:var(--ink)}
+button{border:0;border-radius:11px;padding:11px 15px;background:var(--blue);color:white;font-weight:700;cursor:pointer}
+button.secondary{background:var(--mint);color:var(--navy)}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
+.progress{height:9px;background:#e8eef1;border-radius:20px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:#4ba88b;width:0}
+.entry{padding:9px 0;border-bottom:1px solid #edf1f3;font-size:14px}.entry:last-child{border:0}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}nav a{color:var(--navy);text-decoration:none;background:white;border-radius:20px;padding:8px 12px;font-size:13px;font-weight:700}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.tiles{grid-template-columns:1fr}h1{font-size:23px}}
+@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.card{padding:14px}.stat{font-size:24px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="top"><div><div class="brand">🌿 SehatKampus</div><div class="tag">TRACK KEBIASAAN SEHAT</div></div><div class="tag">Ruang hidup lebih seimbang</div></div>
+<h1>Halo, Mahasiswa! 👋</h1><p>Mulai dari kebiasaan kecil untuk menjaga kesehatan setiap hari.</p>
+</div></header>
+<main>
+<nav><a href="#ringkasan">Ringkasan</a><a href="#catat">Catat Kebiasaan</a><a href="#perasaan">Perasaan</a><a href="#tips">Tips Sehat</a><a href="#bantuan">Bantuan</a></nav>
+<section id="ringkasan" class="grid">
+<div class="card"><div class="muted">💧 Air putih hari ini</div><div class="stat" id="waterStat">0 / 8 gelas</div><div class="progress"><span id="waterBar"></span></div><button class="secondary" onclick="addWater()">+ Tambah 1 gelas</button></div>
+<div class="card"><div class="muted">🏃 Aktivitas fisik</div><div class="stat" id="activityStat">0 menit</div><div class="muted">Target awal: 30 menit</div></div>
+<div class="card"><div class="muted">😴 Durasi tidur</div><div class="stat" id="sleepStat">Belum dicatat</div><div class="muted">Catat waktu tidur dan bangunmu</div></div>
+</section>
+<section id="catat" class="section tiles">
+<div class="card"><h2>💧 Catat minum air</h2><p class="muted">Target contoh: 8 gelas per hari.</p><div class="row"><button onclick="addWater()">+ 1 gelas</button><button class="secondary" onclick="resetWater()">Atur ulang</button></div></div>
+<div class="card"><h2>🥗 Catat makanan</h2><label>Menu makanan hari ini</label><input id="meal" placeholder="Contoh: nasi, sayur, telur"><button onclick="saveMeal()">Simpan makanan</button><div id="mealList"></div></div>
+<div class="card"><h2>🏃 Catat aktivitas</h2><label>Durasi aktivitas (menit)</label><input id="activity" type="number" min="1" placeholder="Contoh: 20"><button onclick="saveActivity()">Simpan aktivitas</button></div>
+<div class="card"><h2>😴 Catat tidur</h2><div class="row"><div><label>Mulai tidur</label><input id="bed" type="time"></div><div><label>Bangun</label><input id="wake" type="time"></div></div><button onclick="saveSleep()">Simpan waktu tidur</button></div>
+</section>
+<section id="perasaan" class="section card"><h2>💚 Cek perasaan hari ini</h2><p class="muted">Pilih yang paling menggambarkan perasaanmu. Isian ini bersifat pribadi di perangkat yang digunakan.</p><select id="mood"><option value="">Pilih perasaan</option><option>Senang</option><option>Tenang</option><option>Stres</option><option>Cemas</option><option>Lelah</option><option>Sedih</option></select><textarea id="note" rows="2" placeholder="Catatan singkat (opsional)"></textarea><button onclick="saveMood()">Simpan check-in</button><div id="moodResult" class="entry"></div></section>
+<section id="tips" class="section tiles">
+<div class="card"><h2>🌱 Tips menjaga kesehatan</h2><div class="entry">• Minum air secara berkala sepanjang hari.</div><div class="entry">• Usahakan tidur dan bangun pada waktu teratur.</div><div class="entry">• Pilih makanan beragam dan bergizi.</div><div class="entry">• Sisihkan waktu untuk bergerak dan beristirahat.</div></div>
+<div class="card"><h2>🧘 Saat merasa stres</h2><div class="entry">• Berhenti sejenak dari aktivitas.</div><div class="entry">• Tarik dan embuskan napas perlahan dengan nyaman.</div><div class="entry">• Bagi tugas besar menjadi langkah kecil.</div><div class="entry">• Ceritakan kesulitan kepada orang tepercaya.</div></div>
+</section>
+<section id="bantuan" class="section card"><h2>📞 Informasi dan bantuan</h2><p>Jika membutuhkan dukungan, hubungi layanan konseling atau fasilitas kesehatan resmi di kampus.</p><p class="notice">Tambahkan nama unit, nomor telepon, dan jadwal layanan resmi kampus sebelum aplikasi digunakan secara luas.</p><p class="notice"><b>Catatan:</b> SehatKampus merupakan media pencatatan kebiasaan dan edukasi kesehatan. Aplikasi ini bukan alat diagnosis dan tidak menggantikan konsultasi dengan tenaga kesehatan profesional.</p></section>
+</main><footer>SehatKampus · Aplikasi Teknologi Kesehatan Digital</footer>
+<script>
+const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let water=get('sk_water',0), activity=get('sk_activity',0), meals=get('sk_meals',[]);
+function render(){document.getElementById('waterStat').textContent=water+' / 8 gelas';document.getElementById('waterBar').style.width=Math.min(water/8*100,100)+'%';document.getElementById('activityStat').textContent=activity+' menit';document.getElementById('mealList').innerHTML=meals.map(x=>'<div class="entry">• '+escapeHtml(x)+'</div>').join('');document.getElementById('sleepStat').textContent=get('sk_sleep','Belum dicatat');document.getElementById('moodResult').textContent=get('sk_mood','');}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function addWater(){water++;set('sk_water',water);render()}function resetWater(){water=0;set('sk_water',water);render()}
+function saveMeal(){let v=document.getElementById('meal').value.trim();if(!v)return;meals.unshift(v);set('sk_meals',meals);document.getElementById('meal').value='';render()}
+function saveActivity(){let v=Number(document.getElementById('activity').value);if(v>0){activity+=v;set('sk_activity',activity);document.getElementById('activity').value='';render()}}
+function saveSleep(){let a=document.getElementById('bed').value,b=document.getElementById('wake').value;if(!a||!b){alert('Isi waktu tidur dan bangun dulu.');return}let [h1,m1]=a.split(':').map(Number),[h2,m2]=b.split(':').map(Number),mins=(h2*60+m2)-(h1*60+m1);if(mins<0)mins+=1440;let result=(mins/60).toFixed(1)+' jam';set('sk_sleep',result);render()}
+function saveMood(){let m=document.getElementById('mood').value,n=document.getElementById('note').value.trim();if(!m){alert('Pilih perasaan terlebih dahulu.');return}let v='Hari ini: '+m+(n?' — '+n:'');set('sk_mood',v);document.getElementById('note').value='';render()}
+render();
+</script>
+</body></html>
